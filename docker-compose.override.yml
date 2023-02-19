@@ -1,0 +1,59 @@
+version: '3.4'
+# The default docker-compose.override file can use the "localhost" as the external name for testing web apps within the same dev machine.
+# The ESHOP_EXTERNAL_DNS_NAME_OR_IP environment variable is taken, by default, from the ".env" file defined like:
+#     ESHOP_EXTERNAL_DNS_NAME_OR_IP=localhost
+# but values present in the environment vars at runtime will always override those defined inside the .env file
+services:
+  sqldata:
+    environment:
+      - SA_PASSWORD=Pass@word
+      - ACCEPT_EULA=Y
+    ports:
+      - "5233:1433"
+    volumes:
+      - ruleengine-sqldata:/var/opt/mssql
+
+  ########################################################################################
+  # Rpi Service
+  ########################################################################################
+  rpi.service:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:80
+      - ApiGatewayUrlExternal=http://${RpiService_EXTERNAL_DNS_NAME_OR_IP}:5202
+      - IdentityUrlExternal=http://${RpiService_EXTERNAL_DNS_NAME_OR_IP}:5105
+      - SeqServerUrl=http://seq
+    ports:
+      - "5210:80"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+    
+    rpi.service-dapr:
+    command:
+      [
+        "./daprd",
+        "-app-id",
+        "rpi.service",
+        "-app-port",
+        "80",
+        "-log-level",
+        "debug",
+        "-placement-host-address",
+        "dapr-placement:50000",
+        "-components-path",
+        "/components",
+        "-config",
+        "/configuration/ruleengine-config.yaml"
+      ]
+  volumes:
+    - "./dapr/components/:/components"
+    - "./dapr/configuration/:/configuration"
+
+volumes:
+  ruleengine-sqldata:
+    external: false
+  ruleengine-nosqldata:
+    external: false
+  ruleengine-basketdata:
+    external: false

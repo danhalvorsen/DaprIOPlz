@@ -1,0 +1,30 @@
+version: '3.4'
+services:
+
+  ########################################################################################
+  # SQL SERVER
+  ########################################################################################
+  sqldata:
+    image: mcr.microsoft.com/azure-sql-edge
+
+  ########################################################################################
+  # RpiService
+  ########################################################################################
+  rpi.service:
+    image: ${DOCKER_REGISTRY-}rpi.service
+    build:
+      context: .
+      dockerfile: src/services/RpiService/Dockerfile
+    depends_on:
+      - redis
+  io.please.service-dapr:
+    image: "daprio/daprd:1.9.0"
+    network_mode: "service: rpi.service"
+    depends_on:
+      - rpi.service
+
+########################################################################################
+# NETWORKS
+########################################################################################
+networks:
+  hello-dapr:
