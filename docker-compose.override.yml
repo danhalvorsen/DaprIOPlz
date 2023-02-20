@@ -75,7 +75,7 @@ services:
       #- HealthChecksUI__HealthChecks__3__Name=bouvet.rule.engine.service
       #- HealthChecksUI__HealthChecks__3__Uri=http://bouvet.rule.engine.service/hc
       ports:
-        - "5200:80"
+        - "5205:80"
   ########################################################################################
   # DAPR-PLACEMENT
   ########################################################################################
