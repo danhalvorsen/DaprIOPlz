@@ -1,16 +1,21 @@
 version: '3.4'
-# The default docker-compose.override file can use the "localhost" as the external name for testing web apps within the same dev machine.
-# The ESHOP_EXTERNAL_DNS_NAME_OR_IP environment variable is taken, by default, from the ".env" file defined like:
-#     ESHOP_EXTERNAL_DNS_NAME_OR_IP=localhost
-# but values present in the environment vars at runtime will always override those defined inside the .env file
 services:
+  ########################################################################################
+  # MQ
+  ########################################################################################  
   rabbitmq:
     ports:
       - "5672:5672"
+  ########################################################################################
+  # REDIS
+  ########################################################################################
   redis:
     image: redis:alpine
     ports:
       - "5379:6379"
+  ########################################################################################
+  # SQL SERVER
+  ########################################################################################
   sqldata:
     environment:
       - SA_PASSWORD=Pass@word
@@ -19,6 +24,9 @@ services:
       - "5233:1433"
     volumes:
       - rpi.service-sqldata:/var/opt/mssql
+  ########################################################################################
+  # SEQ
+  ########################################################################################
   seq:
     environment:
       - ACCEPT_EULA=Y
@@ -27,19 +35,19 @@ services:
   ########################################################################################
   # Rpi Service
   ########################################################################################
-  rpi.service:  
+  rpi.service:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80
-      - ApiGatewayUrlExternal=http://${RpiService_EXTERNAL_DNS_NAME_OR_IP}:5202
-      - IdentityUrlExternal=http://${RpiService_EXTERNAL_DNS_NAME_OR_IP}:5105
+      - ApiGatewayUrlExternal=http://${RpiService_EXTERNAL_DNS_NAME_OR_IP}:5205
+      - IdentityUrlExternal=http://${RpiService_EXTERNAL_DNS_NAME_OR_IP}:5109
       - SeqServerUrl=http://seq
     ports:
       - "5210:80"
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
-      
+#~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~
   rpi.service-dapr:
     command:
       [
@@ -51,7 +59,7 @@ services:
         "-log-level",
         "debug",
         "-placement-host-address",
-        "dapr-placement:50000",
+        "dapr-placement:50005",
         "-components-path",
         "/components",
         "-config",
@@ -68,14 +76,8 @@ services:
       - ASPNETCORE_URLS=http://0.0.0.0:80
       - HealthChecksUI__HealthChecks__0__Name=rpi.service
       - HealthChecksUI__HealthChecks__0__Uri=http://rpi.service/hc
-      #- HealthChecksUI__HealthChecks__1__Name=bouvet.cv.service
-      #- HealthChecksUI__HealthChecks__1__Uri=http://catalog-api/hc
-      #- HealthChecksUI__HealthChecks__2__Name=bouvet.notification.service
-      #- HealthChecksUI__HealthChecks__2__Uri=http://bouvet.notification.service/hc
-      #- HealthChecksUI__HealthChecks__3__Name=bouvet.rule.engine.service
-      #- HealthChecksUI__HealthChecks__3__Uri=http://bouvet.rule.engine.service/hc
       ports:
-        - "5200:80"
+        - "5205:80"
   ########################################################################################
   # DAPR-PLACEMENT
   ########################################################################################
@@ -84,12 +86,12 @@ services:
         [
           "./placement",
           "-port",
-          "50000",
+          "50005",
           "-log-level",
           "debug"
         ]
       ports:
-        - "50000:50000"
+        - "50005:50005"
 volumes:
   rpi.service-sqldata:
     external: false
