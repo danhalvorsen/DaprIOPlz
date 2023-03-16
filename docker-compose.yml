@@ -31,11 +31,33 @@ services:
       dockerfile: src/services/RpiService/Dockerfile
     depends_on:
       - redis
+      - dapr-placement
   rpi.service-dapr:
     image: "daprio/daprd:1.9.0"
     network_mode: "service:rpi.service"
     depends_on:
       - rpi.service
+  ########################################################################################
+  # Web UI
+  # The UI that demostrate the service inocvatio and pub/sub between 
+  # C# <-> JS
+  ########################################################################################
+  ui.service:
+    build:
+      context: . 
+      dockerfile: src/services/app/Dockerfile
+    depends_on:
+    - redis
+    - dapr-placement
+    networks:
+    - hello-dapr
+  ui.service-dapr:
+    image: "daprio/daprd:1.9.0"
+    # Attach the nodeapp-dapr service to the nodeapp network namespace
+    network_mode: "service:ui.service"
+
+# Deploy other daprized services and components (i.e. Redis)
+
   ########################################################################################
   # WEB STATUS
   ########################################################################################

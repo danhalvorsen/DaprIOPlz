@@ -14,7 +14,8 @@
         "rpi.service-dapr": "StartWithoutDebugging",
         "seq": "StartWithoutDebugging",
         "sqldata": "StartWithoutDebugging",
-        "webstatus": "StartWithoutDebugging"
+        "webstatus": "StartWithoutDebugging",
+        "ui.service": "StartWithoutDebugging"
       }
     }
   }

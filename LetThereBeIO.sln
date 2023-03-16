@@ -21,13 +21,18 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "web", "web", "{0885AECE-63D3-4341-B1FC-EE6169BAABF5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ui", "ui", "{DE2B347E-6A3A-417D-BFE1-9B9CEF9934BB}"
+	ProjectSection(SolutionItems) = preProject
+		src\services\app\Dockerfile = src\services\app\Dockerfile
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "vite-project", "vite-project", "{79995834-E49E-4E01-8DF5-BEE5C93EF1B1}"
 	ProjectSection(SolutionItems) = preProject
 		src\services\UI\vite-project\.gitignore = src\services\UI\vite-project\.gitignore
+		src\services\app\Dockerfile = src\services\app\Dockerfile
 		src\services\UI\vite-project\index.html = src\services\UI\vite-project\index.html
 		src\services\UI\vite-project\package-lock.json = src\services\UI\vite-project\package-lock.json
 		src\services\UI\vite-project\package.json = src\services\UI\vite-project\package.json
+		src\package.json = src\package.json
 		src\services\UI\vite-project\src\tsconfig.json = src\services\UI\vite-project\src\tsconfig.json
 	EndProjectSection
 EndProject
@@ -35,6 +40,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{97653042-29C
 	ProjectSection(SolutionItems) = preProject
 		src\services\UI\vite-project\src\main.ts = src\services\UI\vite-project\src\main.ts
 		src\services\UI\vite-project\src\style.css = src\services\UI\vite-project\src\style.css
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dpar", "dpar", "{E06B4A9A-FAF8-460D-A4B5-7F7AE960EA40}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "components", "components", "{95623343-C214-4789-AD19-5F2100E9E86A}"
+	ProjectSection(SolutionItems) = preProject
+		dapr\components\pubsub.yaml = dapr\components\pubsub.yaml
+		dapr\components\statestore.yaml = dapr\components\statestore.yaml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "configuration", "configuration", "{9BF4CB1D-5465-4CC1-AC98-A1CB48C6C30A}"
+	ProjectSection(SolutionItems) = preProject
+		dapr\configuration\config.yaml = dapr\configuration\config.yaml
 	EndProjectSection
 EndProject
 Global
@@ -67,6 +85,8 @@ Global
 		{DE2B347E-6A3A-417D-BFE1-9B9CEF9934BB} = {F775D43B-5F78-425E-9872-221082AA33BB}
 		{79995834-E49E-4E01-8DF5-BEE5C93EF1B1} = {DE2B347E-6A3A-417D-BFE1-9B9CEF9934BB}
 		{97653042-29CA-4ABD-95E6-94273A383660} = {79995834-E49E-4E01-8DF5-BEE5C93EF1B1}
+		{95623343-C214-4789-AD19-5F2100E9E86A} = {E06B4A9A-FAF8-460D-A4B5-7F7AE960EA40}
+		{9BF4CB1D-5465-4CC1-AC98-A1CB48C6C30A} = {E06B4A9A-FAF8-460D-A4B5-7F7AE960EA40}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {82697140-F6CF-46AE-8AC2-B9349B226EAD}
