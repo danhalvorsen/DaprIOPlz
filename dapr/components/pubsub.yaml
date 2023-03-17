@@ -1,0 +1,12 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: rpi-pubsub
+  namespace: rpi.service
+spec:
+  pubsubname: digitaliopubsub
+  topic: ioresult
+  route: /ioresults
+scopes:
+  - rpi.service
+  - ui.service
