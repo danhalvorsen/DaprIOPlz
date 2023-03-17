@@ -1,11 +1,7 @@
 import {
   provideFASTDesignSystem,
   fastCard,
-  fastButton
-} from '@microsoft/fast-components';
+  fastButton,
+} from '@microsoft/fast-components'
 
-provideFASTDesignSystem()
-  .register(
-    fastCard(),
-    fastButton()
-  );
+provideFASTDesignSystem().register(fastCard(), fastButton())
