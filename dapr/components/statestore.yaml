@@ -16,9 +16,7 @@ spec:
   - name: actorStateStore
     value: "true"
 auth:
-  secretStore: ruleenginedapr-secretstore
+  secretStore: rpi.service-secretstore
 scopes:
-- bouvet.cv.service
-- cv.partner.service
-- bouvet.notification.service
-- bouvet.rule.engine.service
+- rpi.service
+- ui.service

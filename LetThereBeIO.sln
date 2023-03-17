@@ -6,6 +6,7 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FF7F687E-F81E-4DC2-A009-C3313A1806D2}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+		Create-DockerfileSolutionRestore.ps1 = Create-DockerfileSolutionRestore.ps1
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RpiService", "src\services\RpiService\RpiService.csproj", "{94178868-2B0E-4BB5-8280-7A4B7EB4AFF8}"
@@ -35,9 +36,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "configuration", "configurat
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "contracts", "contracts", "{DE303880-FE58-455A-937A-F57D67B75109}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "contracts", "src\contracts\contracts\contracts.csproj", "{2D63BB09-B15C-4A0D-9769-06F1DEE06E4B}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "app", "app", "{EA2CC105-69A6-4800-9619-AC11378062E5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "contracts", "src\contracts\contracts\contracts.csproj", "{2D63BB09-B15C-4A0D-9769-06F1DEE06E4B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -74,7 +73,6 @@ Global
 		{9BF4CB1D-5465-4CC1-AC98-A1CB48C6C30A} = {E06B4A9A-FAF8-460D-A4B5-7F7AE960EA40}
 		{DE303880-FE58-455A-937A-F57D67B75109} = {F775D43B-5F78-425E-9872-221082AA33BB}
 		{2D63BB09-B15C-4A0D-9769-06F1DEE06E4B} = {DE303880-FE58-455A-937A-F57D67B75109}
-		{EA2CC105-69A6-4800-9619-AC11378062E5} = {84F0F47B-BC87-4F52-96E4-CFFAEE593D6C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {82697140-F6CF-46AE-8AC2-B9349B226EAD}

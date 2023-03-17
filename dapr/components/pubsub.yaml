@@ -5,9 +5,8 @@ metadata:
   namespace: rpi.service
 spec:
   pubsubname: digitaliopubsub
-  topic: IOResult
+  topic: ioresult
   route: /ioresults
 scopes:
   - rpi.service
   - ui.service
-
