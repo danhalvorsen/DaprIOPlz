@@ -31,7 +31,7 @@ services:
     environment:
       - ACCEPT_EULA=Y
     ports:
-      - "5340:80"
+      - "5340:82"
   ########################################################################################
   # Rpi Service
   ########################################################################################
@@ -44,6 +44,7 @@ services:
       - SeqServerUrl=http://seq
     ports:
       - "5210:80"
+      - "50001:50001"
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
@@ -52,18 +53,12 @@ services:
     command:
       [
         "./daprd",
-        "-app-id",
-        "rpi.service",
-        "-app-port",
-        "80",
-        "-log-level",
-        "debug",
-        "-placement-host-address",
-        "dapr-placement:50005",
-        "-components-path",
-        "/components",
-        "-config",
-        "/configuration/config.yaml"
+        "-app-id", "rpi.service",
+        "-app-port", "80",
+        "-log-level", "debug",
+        "-placement-host-address", "dapr-placement:50000",
+        "-components-path", "/components",
+        "-config", "/configuration/config.yaml"
       ]
     volumes:
       - "./dapr/components/:/components"
@@ -74,36 +69,29 @@ services:
   # C# <-> JS
   ########################################################################################
   ui.service:
+    environment:
+      - ApiGatewayUrlExternal=http://${RpiService_EXTERNAL_DNS_NAME_OR_IP}:5205
+      - IdentityUrlExternal=http://${RpiService_EXTERNAL_DNS_NAME_OR_IP}:5109
+      - SeqServerUrl=http://seq
     ports:
-      - "50001:50001" # Dapr instances communicate over gRPC so we need to expose the gRPC port
-      #depends_on:
-      #- redis
-      #- placement
-      #networks:
-      #- hello-dapr
+      - "5173:90"
+      - "50002:50002"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
   ui.service-dapr:
-    image: "daprio/daprd:edge"
     command:
-      [
-        "./daprd",
-        "--app-id",
-        "ui",
-        "--app-port",
-        "3000",
-        "-placement-host-address",
-        "dapr-placement:50005", # Dapr's placement service can be reach via the docker DNS entry
-        "-components-path",
-        "/components",
-        "-config",
-        "/configuration/config.yaml"
+      ["./daprd",
+        "-app-id", "ui",
+        "-app-port", "90",
+        "-placement-host-address","dapr-placement:50000", # Dapr's placement service can be reach via the docker DNS entry
+        "-components-path","/components",
+        "-config", "/configuration/config.yaml"
       ]
     volumes:
       # Mount our components folder for the runtime to use. The mounted location must match the --resources-path argument.
       - "./dapr/components/:/components"
       - "./dapr/configuration/:/configuration"
-    depends_on:
-      - ui.service
-      - redis
 # Attach the nodeapp-dapr service to the nodeapp network namespace
     network_mode: "service:ui.service" 
   ########################################################################################
@@ -111,27 +99,20 @@ services:
   #######################################################################################
   webstatus:
     environment:
-      - ASPNETCORE_URLS=http://0.0.0.0:80
-      - HealthChecksUI__HealthChecks__0__Name=rpi.service
-      - HealthChecksUI__HealthChecks__0__Uri=http://rpi.service/hc
-      - HealthChecksUI__HealthChecks__1__Name=ui.service
-      - HealthChecksUI__HealthChecks__1__Uri=http://ui.service/hc
+      - ASPNETCORE_URLS=http://0.0.0.0:100
+      - HealthChecksUI__HealthChecks__0__Name=RPI SERVICE
+      - HealthChecksUI__HealthChecks__0__Uri=http://rpi-service/hc
+      - HealthChecksUI__HealthChecks__1__Name=UI SERVICE
+      - HealthChecksUI__HealthChecks__1__Uri=http://ui-service/hc
     ports:
-      - "5205:80"
+      - "5205:100"
   ########################################################################################
   # DAPR-PLACEMENT
   ########################################################################################
   dapr-placement:
-    command:
-      [
-        "./placement",
-        "-port",
-        "50005",
-        "-log-level",
-        "debug"
-      ]
+    command: ["./placement", "-port", "50000", "-log-level", "debug"]
     ports:
-      - "50005:50005"
+      - "50000:50000"
 volumes:
   rpi.service-sqldata:
     external: false

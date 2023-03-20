@@ -1,6 +1,5 @@
 version: '3.4'
 services:
-
   ########################################################################################
   # MQ
   ########################################################################################
@@ -32,6 +31,8 @@ services:
     depends_on:
       - redis
       - dapr-placement
+    networks:
+      - hello-dapr
   rpi.service-dapr:
     image: "daprio/daprd:1.9.0"
     network_mode: "service:rpi.service"
@@ -43,6 +44,7 @@ services:
   # C# <-> JS
   ########################################################################################
   ui.service:
+    image: ${DOCKER_REGISTRY:-ui.service}-ui.service  
     build:
       context: . 
       dockerfile: src/services/app/Dockerfile
@@ -55,6 +57,8 @@ services:
     image: "daprio/daprd:1.9.0"
     # Attach the nodeapp-dapr service to the nodeapp network namespace
     network_mode: "service:ui.service"
+    depends_on:
+      - ui.service
 
 # Deploy other daprized services and components (i.e. Redis)
 
@@ -75,4 +79,4 @@ services:
 # NETWORKS
 ########################################################################################
 networks:
-  hello-dapr:
+  hello-dapr: null
