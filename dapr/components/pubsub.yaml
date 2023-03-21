@@ -2,7 +2,7 @@ apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: rpi-pubsub
-  namespace: rpi.service
+  namespace: ns.rpi.service
 spec:
   pubsubname: digitaliopubsub
   topic: ioresult

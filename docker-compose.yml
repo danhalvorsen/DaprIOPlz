@@ -44,7 +44,7 @@ services:
   # C# <-> JS
   ########################################################################################
   ui.service:
-    image: ${DOCKER_REGISTRY:-ui.service}-ui.service  
+    image: ${DOCKER_REGISTRY:-ui.service}-ui.service
     build:
       context: . 
       dockerfile: src/services/app/Dockerfile

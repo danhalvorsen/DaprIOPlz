@@ -92,8 +92,6 @@ services:
       # Mount our components folder for the runtime to use. The mounted location must match the --resources-path argument.
       - "./dapr/components/:/components"
       - "./dapr/configuration/:/configuration"
-# Attach the nodeapp-dapr service to the nodeapp network namespace
-    network_mode: "service:ui.service" 
   ########################################################################################
   # WebStatus
   #######################################################################################

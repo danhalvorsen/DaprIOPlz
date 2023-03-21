@@ -15,7 +15,8 @@
         "seq": "StartWithoutDebugging",
         "sqldata": "StartWithoutDebugging",
         "webstatus": "StartWithoutDebugging",
-        "ui.service": "StartWithoutDebugging"
+        "ui.service": "StartWithoutDebugging",
+        "ui.service-dapr": "StartWithoutDebugging"
       }
     }
   }
