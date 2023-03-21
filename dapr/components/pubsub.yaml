@@ -4,9 +4,21 @@ metadata:
   name: rpi-pubsub
   namespace: ns.rpi.service
 spec:
-  pubsubname: digitaliopubsub
-  topic: ioresult
-  route: /ioresults
+  type: pubsub.rabbitmq
+  version: v1
+  metadata:
+  - name: host
+    value: "amqp://localhost:5672"
+  - name: durable
+    value: "false"
+  - name: deletedWhenUnused
+    value: "false"
+  - name: autoAck
+    value: "false"
+  - name: reconnectWait
+    value: "0"
+  - name: concurrency
+    value: parallel
 scopes:
   - rpi.service
   - ui.service
