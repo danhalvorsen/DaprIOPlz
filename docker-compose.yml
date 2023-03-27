@@ -1,0 +1,82 @@
+version: '3.4'
+services:
+  ########################################################################################
+  # MQ
+  ########################################################################################
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+  ########################################################################################
+  # REDIS
+  ########################################################################################
+  redis:
+    image: redis:alpine
+  ########################################################################################
+  # SQL SERVER
+  ########################################################################################
+  sqldata:
+    image: mcr.microsoft.com/azure-sql-edge
+  ########################################################################################
+  # SEQ
+  ########################################################################################
+  seq:
+    image: datalust/seq:latest
+  ########################################################################################
+  # RpiService
+  ########################################################################################
+  rpi.service:
+    image: ${DOCKER_REGISTRY-}rpi.service
+    build:
+      context: .
+      dockerfile: src/services/RpiService/Dockerfile
+    depends_on:
+      - redis
+      - dapr-placement
+    networks:
+      - hello-dapr
+  rpi.service-dapr:
+    image: "daprio/daprd:1.9.0"
+    network_mode: "service:rpi.service"
+    depends_on:
+      - rpi.service
+  ########################################################################################
+  # Web UI
+  # The UI that demostrate the service inocvatio and pub/sub between 
+  # C# <-> JS
+  ########################################################################################
+  ui.service:
+    image: ${DOCKER_REGISTRY:-ui.service}-ui.service
+    build:
+      context: . 
+      dockerfile: src/services/app/Dockerfile
+    depends_on:
+    - redis
+    - dapr-placement
+    networks:
+    - hello-dapr
+  ui.service-dapr:
+    image: "daprio/daprd:1.9.0"
+    # Attach the nodeapp-dapr service to the nodeapp network namespace
+    network_mode: "service:ui.service"
+    depends_on:
+      - ui.service
+
+# Deploy other daprized services and components (i.e. Redis)
+
+  ########################################################################################
+  # WEB STATUS
+  ########################################################################################
+  webstatus:
+    image: ${REGISTRY:-eshopdapr}/webstatus:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/web/webStatus/Dockerfile
+  ########################################################################################
+  # DAPR-PLACEMENT
+  ########################################################################################
+  dapr-placement:
+    image: "daprio/dapr:1.9.0"
+########################################################################################
+# NETWORKS
+########################################################################################
+networks:
+  hello-dapr: null

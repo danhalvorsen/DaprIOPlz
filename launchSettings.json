@@ -1,0 +1,23 @@
+{
+  "profiles": {
+    "Docker Compose": {
+      "commandName": "DockerCompose",
+      "commandVersion": "1.0",
+      "composeLaunchAction": "LaunchBrowser",
+      "composeLaunchServiceName": "rpi.service",
+      "composeLaunchUrl": "{Scheme}://localhost:{ServicePort}/swagger",
+      "serviceActions": {
+        "dapr-placement": "StartWithoutDebugging",
+        "rabbitmq": "StartWithoutDebugging",
+        "redis": "StartWithoutDebugging",
+        "rpi.service": "StartDebugging",
+        "rpi.service-dapr": "StartWithoutDebugging",
+        "seq": "StartWithoutDebugging",
+        "sqldata": "StartWithoutDebugging",
+        "webstatus": "StartWithoutDebugging",
+        "ui.service": "StartWithoutDebugging",
+        "ui.service-dapr": "StartWithoutDebugging"
+      }
+    }
+  }
+}
